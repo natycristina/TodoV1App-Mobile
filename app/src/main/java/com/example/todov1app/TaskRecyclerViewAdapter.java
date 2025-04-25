@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +44,13 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     public void onBindViewHolder(ViewHolder holder, int position) {
         String label = mData.get(position).getName();
         holder.myTextView.setText(label);
+        // Definindo o que acontece quando o botão Show Details for clicado
+        holder.showDetailsButton.setOnClickListener(v -> {
+            Task task = mData.get(position);
+            String details = "Priority: " + task.getPriority();
+            Toast.makeText(v.getContext(), details, Toast.LENGTH_SHORT).show();
+        });
+
     }
 
     // total number of rows
@@ -55,10 +64,12 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView myTextView;
+        Button showDetailsButton;  // Add reference to Button
 
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.itemTextView);
+            showDetailsButton = itemView.findViewById(R.id.showDetailsButton);  // Initialize the Button
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

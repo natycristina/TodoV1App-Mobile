@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.RadioGroup;
 
 import com.example.todov1app.databinding.ActivityAddTaskBinding;
 
@@ -20,7 +21,18 @@ public class AddTaskActivity extends AppCompatActivity {
         binding.addNewButton.setOnClickListener(view -> {
             String name = binding.taskNameEditText.getText().toString();
             String desc = binding.taskDescEditText.getText().toString();
-            Task task = new Task(name, desc);
+            RadioGroup priorityGroup = findViewById(R.id.priorityRadioGroup);
+            int selectedId = priorityGroup.getCheckedRadioButtonId();
+
+            String priority = "Low"; // valor padrão
+            if (selectedId == R.id.highPriorityRadio) {
+                priority = "High";
+            } else if (selectedId == R.id.mediumPriorityRadio) {
+                priority = "Medium";
+            }
+// Agora você pode criar a task com isso
+            Task task = new Task(name, desc, priority);
+
             Intent i = new Intent();
             i.putExtra("taskAdded", task);
             setResult(RESULT_OK, i);
